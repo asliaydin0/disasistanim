@@ -1,0 +1,10 @@
+# Python sanal ortamı
+venv/
+env/
+
+# Gizli dosyalar
+.env
+
+# Python önbellek dosyaları
+__pycache__/
+*.pyc

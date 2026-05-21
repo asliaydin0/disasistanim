@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diş Sağlığı Asistanı | Giriş</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* Senin Orijinal Tasarımın Birebir Aynı Bırakıldı */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    #bg-video { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; filter: brightness(1.0); }
+    body { font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; justify-content: center; align-items: center; }
+    .container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 1; }
+    h1 { text-align: center; color: #fff; margin-bottom: 20px; font-size: 2em; font-weight: bold; text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+    .login-box { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border-radius: 16px; padding: 35px 45px; max-width: 500px; width: 100%; color: white; text-align: center; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 0 30px rgba(255, 255, 255, 0.15); transition: all 0.3s ease, transform 0.3s ease; }
+    .login-box:hover { transform: scale(1.01); box-shadow: 0 0 40px rgba(241, 196, 15, 0.2); }
+    .login-box h2 { font-size: 28px; margin-bottom: 25px; font-weight: 600; color: #fff; }
+    
+    .step-indicator { display: flex; justify-content: center; margin-bottom: 25px; }
+    .step { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); margin: 0 4px; transition: all 0.3s ease; }
+    .step.active { background: #f1c40f; transform: scale(1.0); box-shadow: 0 0 6px rgba(241, 196, 15, 0.6); }
+    
+    .input-box { position: relative; margin-bottom: 18px; }
+    
+    /* Yeni Eklenen Select (Rol Seçimi) İçin Stil Uyumlaması */
+    .input-box select { appearance: none; width: 100%; padding: 14px 14px 14px 45px; border-radius: 35px; border: none; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 15px; outline: none; transition: 0.3s ease; cursor: pointer; }
+    .input-box select option { color: #111; background: #fff; }
+    .input-box select:focus { background: rgba(255, 255, 255, 0.15); box-shadow: 0 0 8px rgba(241, 196, 15, 0.3); }
+    
+    .input-box input { width: 100%; padding: 14px 14px 14px 45px; border-radius: 35px; border: none; background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 15px; outline: none; transition: 0.3s ease; }
+    .input-box input:focus { background: rgba(255, 255, 255, 0.15); box-shadow: 0 0 8px rgba(241, 196, 15, 0.3); }
+    .input-box input::placeholder { color: #fff9f9; opacity: 1; }
+    .input-box i { position: absolute; top: 50%; left: 16px; transform: translateY(-50%); color: #ffffff; font-size: 14px; pointer-events: none;}
+    
+    .options { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 18px; color: #ccc; }
+    .options a { color: #f1c40f; text-decoration: none; }
+    .login-btn { width: 100%; padding: 14px; border-radius: 35px; background: linear-gradient(90deg, #f1c40f, #e67e22); border: none; color: #111; font-weight: 600; font-size: 16px; cursor: pointer; transition: all 0.3s ease; }
+    .login-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(241, 196, 15, 0.3); }
+    .back-btn { width: 100%; padding: 12px; border-radius: 35px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; font-weight: 500; font-size: 15px; cursor: pointer; transition: all 0.3s ease; margin-bottom: 12px; }
+    .back-btn:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-1px); }
+    .register-link { margin-top: 20px; font-size: 13px; color: #ffffff; }
+    .register-link a { color: #f1c40f; text-decoration: none; }
+    #mesaj-alani { margin-top: 12px; font-weight: 500; min-height: 18px; }
+
+    /* Aşamalar için animasyon */
+    .step-content { display: none; animation: fadeIn 0.4s ease; }
+    .step-content.active { display: block; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media screen and (max-width: 480px) {
+      .login-box { padding: 30px 20px; max-width: 90%; }
+      .login-box h2 { font-size: 24px; margin-bottom: 20px; }
+      .input-box input, .input-box select { font-size: 14px; padding-left: 40px; }
+      .input-box i { font-size: 12px; left: 14px; }
+      .login-btn, .back-btn { font-size: 14px; padding: 12px; }
+      .options { font-size: 12px; flex-direction: column; align-items: flex-start; gap: 6px; margin-bottom: 15px; }
+      h1 { font-size: 1.8em; margin-bottom: 15px; }
+      .step { width: 8px; height: 8px; margin: 0 3px; }
+      .register-link { margin-top: 15px; font-size: 12px; }
+      #mesaj-alani { margin-top: 10px; }
+    }
+  </style>
+</head>
+<body>  
+  <video autoplay muted loop id="bg-video">
+    <source src="/static/img/dis.mp4" type="video/mp4"> <!-- Dosya yolunu FastApi static klasörüne göre ayarladık -->
+    Tarayıcınız video etiketini desteklemiyor.
+  </video>
+
+  <div class="container">
+    <h1>Diş Sağlığı Asistanı'na <br> Hoşgeldiniz</h1>
+    <div class="login-box">
+      <h2>Giriş Yap</h2>
+      
+      <!-- Aşama Göstergesi -->
+      <div class="step-indicator">
+        <div class="step active" id="step1"></div>
+        <div class="step" id="step2"></div>
+      </div>
+      
+      <form id="loginForm" onsubmit="girisYap(event)">
+        <!-- Aşama 1: Rol Seçimi -->
+        <div class="step-content active" id="step1-content">
+          <div class="input-box">
+            <i class="fas fa-users-cog"></i>
+            <select id="role" required onchange="nextStep()">
+              <option value="" disabled selected hidden>Giriş Rolünüzü Seçin...</option>
+              <option value="Hasta">Hasta Girişi</option>
+              <option value="Hekim">Doktor Girişi</option>
+              <option value="Sekreter">Sekreter Girişi</option>
+              <option value="Admin">Sistem Yöneticisi</option>
+            </select>
+          </div>
+          <button type="button" class="login-btn" onclick="nextStep()" id="nextBtn" style="display: none;">Devam Et</button>
+        </div>
+
+        <!-- Aşama 2: Giriş Bilgileri -->
+        <div class="step-content" id="step2-content">
+          <button type="button" class="back-btn" onclick="prevStep()">← Geri Dön</button>
+          
+          <!-- E-posta -->
+          <div class="input-box">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" placeholder="E-posta Adresiniz" required />
+          </div>
+
+          <!-- Şifre -->
+          <div class="input-box">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" placeholder="Şifreniz" required />
+          </div>
+
+          <div class="options">
+            <label><input type="checkbox" /> Beni Hatırla</label>
+            <a href="#">Şifremi Unuttum?</a>
+          </div>
+          
+          <button type="submit" class="login-btn">Giriş Yap</button>
+        </div>
+        
+        <div id="mesaj-alani"></div>
+        
+        <p class="register-link">Kliniğimizde kaydınız yok mu? <a href="#">Bize Ulaşın</a></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const video = document.getElementById("bg-video");
+    video.playbackRate = 0.8;
+
+    let currentStep = 1;
+
+    function nextStep() {
+      const role = document.getElementById('role').value;
+      if (!role) {
+        document.getElementById('mesaj-alani').innerHTML = "<span style='color: #ff6b6b;'>Lütfen bir rol seçin!</span>";
+        return;
+      }
+
+      currentStep = 2;
+      updateSteps();
+      document.getElementById('mesaj-alani').innerHTML = "";
+    }
+
+    function prevStep() {
+      currentStep = 1;
+      updateSteps();
+      document.getElementById('mesaj-alani').innerHTML = "";
+    }
+
+    function updateSteps() {
+      // Aşama göstergelerini güncelle
+      document.getElementById('step1').classList.toggle('active', currentStep >= 1);
+      document.getElementById('step2').classList.toggle('active', currentStep >= 2);
+
+      // İçerik alanlarını göster/gizle
+      document.getElementById('step1-content').classList.toggle('active', currentStep === 1);
+      document.getElementById('step2-content').classList.toggle('active', currentStep === 2);
+    }
+
+    // Rol seçildiğinde otomatik devam et butonunu göster
+    document.getElementById('role').addEventListener('change', function() {
+      const nextBtn = document.getElementById('nextBtn');
+      if (this.value) {
+        nextBtn.style.display = 'block';
+      } else {
+        nextBtn.style.display = 'none';
+      }
+    });
+
+    async function girisYap(event) {
+        event.preventDefault(); // Sayfanın yenilenmesini engelle
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const role = document.getElementById('role').value;
+        const mesajAlani = document.getElementById('mesaj-alani');
+
+        // Validasyon
+        if (!role) {
+          mesajAlani.innerHTML = "<span style='color: #ff6b6b;'>Lütfen rolünüzü seçin!</span>";
+          currentStep = 1;
+          updateSteps();
+          return;
+        }
+
+        if (!email || !password) {
+          mesajAlani.innerHTML = "<span style='color: #ff6b6b;'>Lütfen tüm alanları doldurun!</span>";
+          return;
+        }
+
+        mesajAlani.innerHTML = "<span style='color: #f1c40f;'>Kontrol ediliyor...</span>";
+
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password, role })
+            });
+
+            const data = await response.json();
+
+              if (data.durum === 'success') {
+                mesajAlani.innerHTML = `<span style='color: lightgreen;'>${data.mesaj}</span>`;
+                
+                // 1. TARAYICI HAFIZASINA HASTA ID'SİNİ KAYDET (PROFIL SAYFASI İÇİN)
+                localStorage.setItem('kullanici_id', data.kullanici_id);
+                localStorage.setItem('kullanici_ad', data.ad_soyad || 'Kullanıcı');
+                
+                // Seçilen Role göre ilgili panele yönlendirme
+                setTimeout(() => {
+                    if (data.rol === 'Hekim') window.location.href = '/hekim/dashboard';
+                    // 2. HASTAYI ARTIK DİREKT YENİ PROFİL SAYFASINA YÖNLENDİRİYORUZ
+                    else if (data.rol === 'Hasta') window.location.href = '/profil'; 
+                    else if (data.rol === 'Sekreter') window.location.href = '/sekreter/dashboard';
+                    else window.location.href = '/';
+                }, 1500);
+            } else {
+                mesajAlani.innerHTML = `<span style='color: #ff6b6b;'>${data.mesaj}</span>`;
+            }
+        } catch (error) {
+            mesajAlani.innerHTML = `<span style='color: #ff6b6b;'>Sunucuya bağlanılamadı!</span>`;
+        }
+    }
+
+    // Sayfa yüklendiğinde ilk adımı göster
+    document.addEventListener('DOMContentLoaded', function() {
+      updateSteps();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilim | TechLas Dental</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* Dinamik Arka Plan & Flex Yapısı (Footer'ı altta tutmak için) */
+        body { 
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif; 
+            color: #0f172a;
+            background: linear-gradient(180deg, #fff8f3 0%, #e8f7f3 45%, #f4fbff 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Hareketli Arka Plan Işıkları (Sıcak, Canlı Sağlık Tonları) */
+        .bg-blobs {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; overflow: hidden;
+        }
+        .blob1, .blob2, .blob3 {
+            position: absolute; border-radius: 50%; filter: blur(110px);
+            animation: float 12s infinite ease-in-out alternate; opacity: 0.4;
+        }
+        .blob1 { top: -10%; left: -10%; width: 520px; height: 520px; background: #7dd3fc; animation-delay: 0s; }
+        .blob2 { bottom: -25%; right: -15%; width: 620px; height: 620px; background: #fb7185; animation-delay: 3s; }
+        .blob3 { top: 25%; left: 30%; width: 480px; height: 480px; background: #86efac; animation-delay: 5s; }
+
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(40px) scale(1.1); }
+        }
+        
+        /* Navbar Stili - Transparan Cam Katman */
+        .custom-navbar { 
+            background: rgba(255, 255, 255, 0.28); 
+            backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+        }
+        
+        .navbar-brand { 
+            font-weight: 800; font-size: 1.5rem; letter-spacing: 1px; 
+            background: linear-gradient(90deg, #22c55e, #0ea5e9, #fb7185);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav-link { color: rgba(15, 23, 42, 0.75) !important; font-weight: 500; margin: 0 10px; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { color: #fb7185 !important; text-shadow: 0 0 10px rgba(251, 113, 133, 0.2); }
+        .logout-btn { border: 1px solid rgba(251, 113, 133, 0.35); border-radius: 20px; padding: 6px 18px !important; color: #0f172a !important; }
+        .logout-btn:hover { background-color: rgba(251, 113, 133, 0.14); border-color: transparent; color: #0f172a !important; }
+
+        /* Footer Stili (Cam Katman) */
+        .custom-footer {
+            background: rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+            padding: 18px 0;
+            margin-top: auto; /* İçerik kısayken footer'ı en alta iter */
+            position: relative;
+            z-index: 10;
+            color: #0f172a;
+            box-shadow: 0 -12px 30px rgba(15, 23, 42, 0.05);
+        }
+        .footer-link {
+            color: rgba(15, 23, 42, 0.7);
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 0.85rem;
+        }
+        .footer-link:hover { color: #0ea5e9; }
+
+        /* Gelişmiş Buzlu Cam Kutular (Premium Glassmorphism) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+            color: #0f172a; transition: all 0.4s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 50px rgba(15, 23, 42, 0.16);
+            border-color: rgba(14, 165, 233, 0.2);
+        }
+
+        /* Profil Başlığı */
+        .profile-header { padding: 36px 24px; text-align: center; margin-top: 34px; position: relative; z-index: 10; }
+        
+        /* Avatar Çemberi */
+        .avatar-circle { 
+            width: 96px; height: 96px; 
+            background: linear-gradient(135deg, #38bdf8, #22d3ee); 
+            color: #fff; 
+            border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 2.4rem; font-weight: bold; 
+            margin: 0 auto 18px auto; 
+            border: 3px solid rgba(56, 189, 248, 0.25); 
+            box-shadow: 0 0 22px rgba(56, 189, 248, 0.2); 
+        }
+
+        /* Bilgi Kartları ve İkonlar */
+        .info-card { padding: 20px; height: 100%; }
+        
+        .info-icon { 
+            width: 44px; height: 44px; 
+            border-radius: 14px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 1.25rem; 
+            background: linear-gradient(135deg, rgba(251, 113, 133, 0.16), rgba(16, 185, 129, 0.16)); 
+            border: 1px solid rgba(14, 165, 233, 0.16);
+            color: #0ea5e9; 
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        }
+        
+        .text-label { color: #475569; font-size: 0.8rem; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 4px;}
+        .text-value { color: #0f172a; font-weight: 600; font-size: 1.05rem;}
+
+        /* Aktif Hasta Rozeti */
+        .status-badge {
+            display: inline-block;
+            background: rgba(251, 113, 133, 0.12);
+            color: #be123c;
+            border: 1px solid rgba(251, 113, 133, 0.25);
+            padding: 6px 18px;
+            border-radius: 28px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            box-shadow: 0 0 18px rgba(251, 113, 133, 0.12);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Arka Plan Animasyonu -->
+    <div class="bg-blobs">
+        <div class="blob1"></div>
+        <div class="blob2"></div>
+        <div class="blob3"></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg custom-navbar sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/profil"><i class="fas fa-tooth me-2" style="color: #0ea5e9;"></i>TechLas</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars" style="color: #0f172a;"></i>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="/profil"><i class="fas fa-user me-1"></i> Profilim</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/haritam"><i class="fas fa-teeth-open me-1"></i> Diş Haritam</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/fircalama"><i class="fas fa-magic me-1"></i> Fırçalama</a></li>
+                    <li class="nav-item ms-lg-3"><a class="nav-link logout-btn" href="#" onclick="cikisYap()"><i class="fas fa-sign-out-alt me-1"></i> Çıkış</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Ana İçerik Alanı (Flex: 1 ile sayfanın ortasını doldurur) -->
+    <div class="container flex-grow-1" style="position: relative; z-index: 10; max-width: 950px; padding-bottom: 60px;">
+        
+        <!-- Profil Başlığı -->
+        <div class="glass-card profile-header mb-5 mt-4">
+            <div class="avatar-circle" id="avatar-initial">A</div>
+            <h2 class="fw-bold mb-3" id="profil-isim">Yükleniyor...</h2>
+            <div class="status-badge">
+                <i class="fas fa-check-circle me-1"></i> Aktif Hasta Profili
+            </div>
+        </div>
+
+        <!-- Kişisel Bilgiler -->
+        <h5 class="fw-bold mb-4" style="color: #0f172a; letter-spacing: 0.5px;"><i class="fas fa-fingerprint me-2" style="color: #0ea5e9;"></i>Kimlik ve İletişim Bilgileri</h5>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="glass-card info-card">
+                    <div class="d-flex align-items-center">
+                        <div class="info-icon me-4"><i class="fas fa-id-card"></i></div>
+                        <div>
+                            <div class="text-label">TC Kimlik No</div>
+                            <div class="text-value" id="profil-tc">---</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="glass-card info-card">
+                    <div class="d-flex align-items-center">
+                        <div class="info-icon me-4"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <div class="text-label">E-Posta Adresi</div>
+                            <div class="text-value" id="profil-eposta">---</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="glass-card info-card">
+                    <div class="d-flex align-items-center">
+                        <div class="info-icon me-4"><i class="fas fa-phone"></i></div>
+                        <div>
+                            <div class="text-label">Telefon Numarası</div>
+                            <div class="text-value" id="profil-telefon">---</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="glass-card info-card">
+                    <div class="d-flex align-items-center">
+                        <div class="info-icon me-4"><i class="fas fa-calendar-alt"></i></div>
+                        <div>
+                            <div class="text-label">Kayıt Tarihi</div>
+                            <div class="text-value" id="profil-kayit">---</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER ALANI -->
+    <footer class="custom-footer mt-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <span style="font-weight: 700; background: linear-gradient(90deg, #38bdf8, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TechLas Dental</span> &copy; 2026. Tüm hakları saklıdır.
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="footer-link me-3"><i class="fas fa-shield-alt me-1"></i> Gizlilik Sözleşmesi</a>
+                    <a href="#" class="footer-link"><i class="fas fa-headset me-1"></i> Destek Merkezi</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hastaId = localStorage.getItem('kullanici_id');
+            if (!hastaId) {
+                window.location.href = '/login';
+                return;
+            }
+            profilBilgileriniGetir(hastaId);
+        });
+
+        async function profilBilgileriniGetir(id) {
+            try {
+                const response = await fetch(`/api/hasta/profil/${id}`);
+                const data = await response.json();
+
+                if (data.Ad_Soyad) {
+                    document.getElementById('profil-isim').innerText = data.Ad_Soyad;
+                    document.getElementById('avatar-initial').innerText = data.Ad_Soyad.charAt(0).toUpperCase();
+                    document.getElementById('profil-tc').innerText = data.TC_Kimlik || 'Belirtilmedi';
+                    document.getElementById('profil-eposta').innerText = data.Eposta || 'Belirtilmedi';
+                    document.getElementById('profil-telefon').innerText = data.Telefon || 'Belirtilmedi';
+                    document.getElementById('profil-kayit').innerText = data.Uyelik_Tarihi || 'Bilinmiyor';
+                }
+            } catch (error) {
+                console.error("Profil yüklenemedi:", error);
+                document.getElementById('profil-isim').innerText = "Bilgiler Yüklenemedi";
+            }
+        }
+
+        function cikisYap() {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
+    </script>
+</body>
+</html>

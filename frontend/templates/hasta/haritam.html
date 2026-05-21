@@ -1,0 +1,68 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Diş Haritam | TechLas Dental{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <h1>Dijital Diş Haritam</h1>
+
+    <div class="main-container">
+        <div class="score-overview">
+            <div class="score-info">
+                <h5 class="text-uppercase text-muted fw-bold mb-2" style="letter-spacing:1px; font-size:0.8rem;">Ağız Sağlık Puanı</h5>
+                <div class="score-value"><span id="puan-text">--</span><span style="font-size:1.5rem; color:#94a3b8; font-weight:600;">/100</span></div>
+                <div class="score-message" id="mesaj-text">Hesaplanıyor...</div>
+            </div>
+            <div style="position: relative; width: 110px; height: 110px;">
+                 <svg width="110" height="110">
+                   <circle cx="55" cy="55" r="48" stroke="#eef2f6" stroke-width="8" fill="none"/>
+                   <circle class="progress-ring-circle" id="progress-circle" cx="55" cy="55" r="48" stroke="#10b981" stroke-width="8" fill="none" stroke-dasharray="301" stroke-dashoffset="301" />
+                 </svg>
+                 <div class="score-icon-overlay" id="ikon-text" style="font-size: 2.5rem;">⚙️</div>
+            </div>
+        </div>
+
+        <div class="mouth-container">
+            <div class="jaw-header"><i class="fas fa-chevron-up text-primary me-2"></i> Üst Çene</div>
+            <div class="dental-arch upper" id="ust-cene-alani"></div>
+
+            <div class="jaw-header" style="margin-top:40px;"><i class="fas fa-chevron-down text-primary me-2"></i> Alt Çene</div>
+            <div class="dental-arch lower" id="alt-cene-alani"></div>
+        </div>
+
+        <div class="d-flex justify-content-center gap-4 mt-4 flex-wrap small fw-bold text-muted text-uppercase" style="letter-spacing:0.5px;">
+            <div class="d-flex align-items-center"><i class="fas fa-circle me-2" style="color:#10b981; filter: drop-shadow(0 0 3px #10b981);"></i> Sağlıklı</div>
+            <div class="d-flex align-items-center"><i class="fas fa-circle me-2" style="color:#ef4444; filter: drop-shadow(0 0 3px #ef4444);"></i> Çürük/Sorunlu</div>
+            <div class="d-flex align-items-center"><i class="fas fa-circle me-2" style="color:#3b82f6; filter: drop-shadow(0 0 3px #3b82f6);"></i> İşlemli</div>
+            <div class="d-flex align-items-center"><i class="fas fa-ban me-2" style="color:#cbd5e1;"></i> Eksik</div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="toothActionModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold"><i class="fas fa-tooth text-primary me-2"></i>Diş No: <span id="modalToothNo"></span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+            <p class="text-center text-muted mb-4 fw-medium">Bu dişin güncel durumunu seçiniz:</p>
+            <div class="row g-3">
+                <div class="col-4"><div class="status-option" onclick="saveStatus('healthy')"><i class="fas fa-smile text-success"></i><br><small class="fw-bold">Sağlıklı</small></div></div>
+                <div class="col-4"><div class="status-option" onclick="saveStatus('decay')"><i class="fas fa-biohazard text-danger"></i><br><small class="fw-bold">Çürük</small></div></div>
+                <div class="col-4"><div class="status-option" onclick="saveStatus('filling')"><i class="fas fa-fill-drip text-primary"></i><br><small class="fw-bold">Dolgu</small></div></div>
+                <div class="col-4"><div class="status-option" onclick="saveStatus('canal')"><i class="fas fa-root-variable" style="color:#9333ea;"></i><br><small class="fw-bold">Kanal</small></div></div>
+                <div class="col-4"><div class="status-option" onclick="saveStatus('veneer')"><i class="fas fa-gem text-warning"></i><br><small class="fw-bold">Kaplama</small></div></div>
+                <div class="col-4"><div class="status-option" onclick="saveStatus('missing')"><i class="fas fa-ban text-secondary"></i><br><small class="fw-bold">Eksik</small></div></div>
+            </div>
+            <button class="btn-primary-theme mt-4" onclick="goToAnalysis()"><i class="fas fa-stethoscope me-2"></i>Yapay Zeka ile Analiz Et</button>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/haritam.js"></script>
+{% endblock %}

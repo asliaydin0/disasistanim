@@ -1,0 +1,61 @@
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Ana Konteyner (Diş Haritası Beyaz Kartı) */
+.main-container { 
+    max-width: 950px; 
+    margin: 40px auto; 
+    background: rgba(255, 255, 255, 0.95); 
+    padding: 30px; 
+    border-radius: 24px; 
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); 
+}
+
+h1 { color: #1e293b; font-weight: 800; margin: 20px 0; text-align: center; }
+
+/* Puan Kartı */
+.score-overview { display: flex; align-items: center; justify-content: space-between; background: #fff; border-radius: 20px; padding: 25px; margin-bottom: 35px; border: 1px solid #eef2f6; box-shadow: 0 8px 20px rgba(0,0,0,0.03); }
+.score-value { font-size: 3rem; font-weight: 900; color: #0f172a; line-height: 1; }
+.score-message { font-weight: 700; margin-top: 5px; }
+.progress-ring-circle { transition: stroke-dashoffset 1.5s ease-in-out; transform: rotate(-90deg); transform-origin: 50% 50%; stroke-linecap: round; }
+.score-icon-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; }
+
+/* Ağız ve Çene Alanı */
+.mouth-container {
+    background: #f8fafc; border-radius: 30px; padding: 40px 20px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; overflow: hidden;
+}
+.jaw-header { text-align: center; color: #64748b; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 20px; }
+.dental-arch {
+    display: flex; justify-content: center; align-items: center; gap: 4px; margin-bottom: 40px; padding: 20px 0; perspective: 1000px;
+}
+.dental-arch.lower { margin-top: 30px; margin-bottom: 0; }
+
+/* Tekil Diş Tasarımı */
+.tooth-item {
+    width: 42px; position: relative; cursor: pointer;
+    transform: translateY(var(--offset, 0px)); 
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 1;
+}
+.tooth-item:hover { transform: translateY(calc(var(--offset, 0px) - 15px)) scale(1.25) !important; z-index: 10; }
+.tooth-item img { width: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.1)); transition: filter 0.3s ease; }
+
+.tooth-number {
+    position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+    font-size: 0.65rem; font-weight: 800; color: #94a3b8; text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
+.lower .tooth-number { top: auto; bottom: -15px; }
+
+/* Durum Efektleri */
+.tooth-item.healthy img { filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.4)); }
+.tooth-item.decay img, .tooth-item.canal img { filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.8)); animation: pulse-red 2s infinite; }
+.tooth-item.filling img { filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)); }
+.tooth-item.veneer img { filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.6)); }
+.tooth-item.missing img { opacity: 0.3; filter: grayscale(1) drop-shadow(0 0 2px rgba(0,0,0,0.2)); }
+
+@keyframes pulse-red { 0%, 100% { filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.8)); } 50% { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 1)); } }
+
+@media (max-width: 768px) {
+    .tooth-item { width: 28px; } .dental-arch { gap: 2px; } .mouth-container { padding: 30px 10px; }
+}

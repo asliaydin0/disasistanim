@@ -1,0 +1,143 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Fırçalama Takibi | DişAsistanım{% endblock %}
+
+{% block extra_css %}
+<style>
+    .feature-section { background: rgba(255,255,255,0.95); padding: 45px 40px; border-radius: 20px; margin-bottom: 45px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); border: 1px solid rgba(0,0,0,0.03); }
+    .feature-section h2 { color: #023e8a; font-size: 1.8rem; margin-bottom: 25px; font-weight: 600; }
+    .progress { height: 18px; border-radius: 10px; background-color: #f0f0f0; margin-bottom: 25px; overflow: hidden; }
+    .ai-dashboard-card { border-radius: 15px; padding: 25px; border: 1px dashed rgba(0,0,0,0.1); position: relative; overflow: hidden; }
+    .ai-badge { position: absolute; top: 15px; right: 15px; font-size: 0.8rem; background: white; padding: 5px 12px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-weight: 600; color: #666; }
+    
+    .nav-shortcuts { display: flex; justify-content: center; gap: 30px; margin-bottom: 50px; }
+    .nav-shortcuts button { border: none; background-color: #06b6d4; color: white; padding: 12px 20px; border-radius: 10px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; }
+    .nav-shortcuts button:hover { background-color: #a855f7; }
+
+    /* YENİ EKLENEN POPUP STİLLERİ */
+    .reminder-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(2, 62, 138, 0.6);
+        backdrop-filter: blur(8px);
+        z-index: 9999; display: none; align-items: center; justify-content: center;
+    }
+    .reminder-box {
+        background: white; padding: 40px; border-radius: 25px; text-align: center; width: 90%; max-width: 450px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3); animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        position: relative; border-top: 8px solid #06b6d4;
+    }
+    @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .reminder-icon { width: 90px; height: 90px; background: #f0f9ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; font-size: 3rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+    
+    h1 { font-size: 2.8rem; color: #023e8a; font-weight: 700; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); text-align: center; margin-top: 20px; margin-bottom: 40px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Fırçalama Takibi</h1>
+    
+    <div class="nav-shortcuts">
+      <button onclick="document.getElementById('gecmis').scrollIntoView({ behavior: 'smooth' })">Fırçalama Geçmişi</button>
+      <button onclick="document.getElementById('oneri').scrollIntoView({ behavior: 'smooth' })">AI Destekli Öneri</button>
+      <button onclick="document.getElementById('hatirlatma').scrollIntoView({ behavior: 'smooth' })">Hatırlatıcı Ayarla</button>
+    </div>
+
+    <div class="feature-section" id="gecmis">
+      <h2>Fırçalama Geçmişi</h2>
+      <div class="progress">
+        <div id="basari-bar" class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;"></div>
+      </div>
+      <div class="d-flex justify-content-between mb-4">
+          <span class="small text-muted fw-bold">Haftalık Başarı Puanın</span>
+          <span id="basari-text" class="badge bg-success shadow-sm p-2 px-3">%0 Başarı</span>
+      </div>
+      
+      <p class="mb-4">Günlük fırçalama verilerinizi kaydederek haftalık başarı yüzdesi hesaplanır.</p>
+      
+      <div class="d-flex align-items-center gap-4">
+          <div class="d-inline-flex align-items-center gap-2" id="sabah-buton-alani">
+              </div>
+          <div class="d-inline-flex align-items-center gap-2" id="aksam-buton-alani">
+              </div>
+      </div>
+    </div>
+
+    <div class="feature-section" id="oneri">
+      <h2>AI Destekli Öneri</h2>
+      <div id="ai-karti" class="ai-dashboard-card shadow-sm">
+          <div class="ai-badge"><i class="fas fa-microchip me-1"></i> Akıllı Analiz</div>
+          <div class="row align-items-center">
+              <div class="col-auto">
+                  <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 80px; height: 80px;">
+                      <i id="ai-icon" class="fas fa-lightbulb fa-2x"></i>
+                  </div>
+              </div>
+              <div class="col">
+                  <h4 id="ai-title" class="mb-1 fw-bold">Yükleniyor...</h4>
+                  
+                  <div class="row g-3 mt-4">
+                      <div class="col-6 col-md-4">
+                          <div class="p-3 text-center rounded-4 shadow-sm border" style="background: rgba(255, 193, 7, 0.1); border-color: rgba(255, 193, 7, 0.2) !important;">
+                              <div class="small fw-bold text-uppercase text-muted opacity-75 mb-1">Sabah</div>
+                              <div class="h4 fw-bold mb-0 text-dark"><i class="fas fa-sun text-warning me-2"></i><span id="stat-sabah">0</span> / 7</div>
+                          </div>
+                      </div>
+                      <div class="col-6 col-md-4">
+                          <div class="p-3 text-center rounded-4 shadow-sm border" style="background: rgba(13, 110, 253, 0.1); border-color: rgba(13, 110, 253, 0.2) !important;">
+                              <div class="small fw-bold text-uppercase text-muted opacity-75 mb-1">Akşam</div>
+                              <div class="h4 fw-bold mb-0 text-dark"><i class="fas fa-moon text-primary me-2"></i><span id="stat-aksam">0</span> / 7</div>
+                          </div>
+                      </div>
+                      <div class="col-12 col-md-4">
+                          <div class="p-3 text-center rounded-4 shadow-sm border" style="background: rgba(220, 53, 69, 0.1); border-color: rgba(220, 53, 69, 0.2) !important;">
+                              <div class="small fw-bold text-uppercase text-muted opacity-75 mb-1">Seri</div>
+                              <div class="h4 fw-bold mb-0 text-dark"><i class="fas fa-fire text-danger me-2"></i><span id="stat-seri">0</span> Gün</div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="p-3 bg-white rounded-3 border-start border-4 border-info shadow-sm mt-5">
+                      <p id="ai-message" class="mb-0 text-dark fw-medium" style="font-size: 1.1rem;">"Analiz ediliyor..."</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="feature-section" id="hatirlatma">
+      <h2>Hatırlatıcı Ayarla</h2>
+      <div class="row g-4 align-items-end">
+          <div class="col-md-3">
+              <label class="form-label fw-bold text-secondary small text-uppercase"><i class="fas fa-sun text-warning me-2"></i>Sabah Saati</label>
+              <input type="time" id="sabah" class="form-control form-control-lg border-0 bg-light" value="08:00">
+          </div>
+          <div class="col-md-3">
+              <label class="form-label fw-bold text-secondary small text-uppercase"><i class="fas fa-moon text-primary me-2"></i>Akşam Saati</label>
+              <input type="time" id="aksam" class="form-control form-control-lg border-0 bg-light" value="22:30">
+          </div>
+          <div class="col-md-4">
+              <button class="btn btn-primary btn-lg w-100 shadow fw-bold" onclick="saatleriKaydet()"><i class="fas fa-save me-2"></i>Ayarları Kaydet</button>
+          </div>
+      </div>
+      <div id="status-msg" class="mt-4 d-none"><div class="alert alert-success border-0 shadow-sm py-3"><strong>Başarılı!</strong> Hatırlatıcı saatlerin güncellendi.</div></div>
+    </div>
+</div>
+
+<div id="reminder-popup" class="reminder-overlay">
+    <div class="reminder-box">
+        <div class="reminder-icon" id="popup-icon-container">
+            <i class="fas fa-clock" id="popup-icon"></i>
+        </div>
+        <h2 class="fw-bold mb-3" style="color: #023e8a;" id="popup-title">Fırçalama Vakti!</h2>
+        <p class="text-muted mb-4" id="popup-message" style="font-size: 1.1rem;">Sağlıklı gülüşler için 2 dakikanı ayırma vakti geldi.</p>
+        <button class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm" onclick="kapatPopup()">
+            <i class="fas fa-check me-2"></i> Tamam, Fırçalıyorum!
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/fircalama.js"></script>
+{% endblock %}

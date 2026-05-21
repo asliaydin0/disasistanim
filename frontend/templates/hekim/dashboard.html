@@ -1,0 +1,125 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Hekim Paneli | TechLas Dental{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5" style="max-width: 1100px;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h4 fw-bold text-dark m-0" style="color: #023e8a !important; letter-spacing: -0.5px;">
+            <i class="fas fa-user-md text-primary me-2"></i> Klinik Yönetim Paneli
+        </h1>
+        <span class="badge bg-light text-secondary border px-3 py-2 shadow-sm" style="font-size: 0.85rem; font-weight: 500;">
+            <i class="fas fa-calendar-alt me-1"></i> Bugün: <span id="gunun-tarihi"></span>
+        </span>
+    </div>
+
+    <div class="row mb-4 g-3">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3 h-100" style="border-top: 3px solid #06b6d4 !important;">
+                <div class="card-body p-3 d-flex align-items-center">
+                    <div class="bg-info bg-opacity-10 p-2 rounded-2 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="fas fa-users text-info fa-lg"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted fw-bold mb-0 text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.5px;">Toplam Hasta</h6>
+                        <h3 class="fw-bold mb-0 text-dark" id="toplam-hasta" style="font-size: 1.4rem;">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3 h-100" style="border-top: 3px solid #ef4444 !important;">
+                <div class="card-body p-3 d-flex align-items-center">
+                    <div class="bg-danger bg-opacity-10 p-2 rounded-2 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="fas fa-exclamation-triangle text-danger fa-lg"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted fw-bold mb-0 text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.5px;">Acil Müdahale</h6>
+                        <h3 class="fw-bold mb-0 text-dark" id="acil-hasta" style="font-size: 1.4rem;">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-header bg-white border-bottom-0 pt-3 pb-2 px-4">
+            <h6 class="fw-bold mb-0" style="color: #1e293b; font-size: 0.95rem;"><i class="fas fa-clipboard-list me-2 text-primary"></i>Kayıtlı Hastalar Listesi</h6>
+        </div>
+        <div class="card-body p-0"> 
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="text-muted fw-semibold ps-4 border-0">Hasta ID</th>
+                            <th scope="col" class="text-muted fw-semibold border-0">Ad Soyad</th>
+                            <th scope="col" class="text-muted fw-semibold border-0">TC Kimlik</th>
+                            <th scope="col" class="text-muted fw-semibold border-0">Kayıt Tarihi</th>
+                            <th scope="col" class="text-muted fw-semibold border-0">Ağız Sağlık Puanı</th>
+                            <th scope="col" class="text-muted fw-semibold text-end pe-4 border-0">Aksiyon</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hasta-tablosu" style="border-top: 1px solid #f1f5f9;">
+                        <tr><td colspan="6" class="text-center py-4 text-muted">Hastalar yükleniyor...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('gunun-tarihi').innerText = new Date().toLocaleDateString('tr-TR');
+
+    async function hastaListesiniCek() {
+        try {
+            const response = await fetch('/api/hekim/hasta-listesi');
+            const data = await response.json();
+            const tablo = document.getElementById('hasta-tablosu');
+            
+            if(data.hastalar && data.hastalar.length > 0) {
+                tablo.innerHTML = ''; 
+                let acilSayisi = 0;
+
+                data.hastalar.forEach(hasta => {
+                    let puanRenk = "success";
+                    if(hasta.saglik_puani < 50) { puanRenk = "danger"; acilSayisi++; }
+                    else if(hasta.saglik_puani < 80) { puanRenk = "warning"; }
+
+                    tablo.innerHTML += `
+                        <tr>
+                            <td class="fw-bold text-muted ps-4 py-3">#${hasta.hasta_id}</td>
+                            <td class="fw-bold text-dark py-3">${hasta.Ad_Soyad}</td>
+                            <td class="text-muted py-3">${hasta.TC_Kimlik}</td>
+                            <td class="text-muted py-3">${hasta.kayit_tarihi}</td>
+                            <td class="py-3">
+                                <span class="badge bg-${puanRenk} bg-opacity-10 text-${puanRenk} px-2 py-1 rounded fw-bold border border-${puanRenk} border-opacity-25" style="font-size: 0.75rem;">
+                                    %${hasta.saglik_puani}
+                                </span>
+                            </td>
+                            <td class="text-end pe-4 py-3">
+                                <a href="/hekim/hasta-detay/${hasta.hasta_id}" class="btn btn-sm btn-light border text-primary rounded px-3 shadow-sm" style="font-size: 0.8rem; font-weight: 500;">
+                                    <i class="fas fa-stethoscope me-1"></i> İncele
+                                </a>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                document.getElementById('toplam-hasta').innerText = data.hastalar.length;
+                document.getElementById('acil-hasta').innerText = acilSayisi;
+
+            } else {
+                tablo.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">Henüz sisteme kayıtlı hasta bulunmuyor.</td></tr>';
+            }
+        } catch (error) {
+            console.error("Hata:", error);
+            tablo.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-danger">Veriler çekilirken bir hata oluştu!</td></tr>';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', hastaListesiniCek);
+</script>
+{% endblock %}
