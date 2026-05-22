@@ -214,11 +214,7 @@
                 
                 // Seçilen Role göre ilgili panele yönlendirme
                 setTimeout(() => {
-                    if (data.rol === 'Hekim') window.location.href = '/hekim/dashboard';
-                    // 2. HASTAYI ARTIK DİREKT YENİ PROFİL SAYFASINA YÖNLENDİRİYORUZ
-                    else if (data.rol === 'Hasta') window.location.href = '/profil'; 
-                    else if (data.rol === 'Sekreter') window.location.href = '/sekreter/dashboard';
-                    else window.location.href = '/';
+                    window.location.href = '/';
                 }, 1500);
             } else {
                 mesajAlani.innerHTML = `<span style='color: #ff6b6b;'>${data.mesaj}</span>`;

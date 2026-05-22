@@ -1,0 +1,136 @@
+{% extends "layout/base.html" %}
+
+{% block title %}Anasayfa | DişAsistanım{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    <div class="row align-items-center gy-5">
+        <div class="col-lg-7">
+            <span class="badge bg-info bg-opacity-10 text-info mb-3">Profesyonel Ağız Bakımı</span>
+            <h1 class="display-5 fw-bold">Diş sağlığınızı tek bir merkezden yönetin.</h1>
+            <p class="lead text-muted">DişAsistanım ile analizinizi görüntüleyin, diş haritanızı kontrol edin ve günlük fırçalama alışkanlığınızı güçlendirin.</p>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <a href="/analiz" class="btn btn-primary btn-lg">Diş Analizi</a>
+                <a href="/fircalama" class="btn btn-outline-primary btn-lg">Fırçalama Takibi</a>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card glass-card rounded-4 border-0 p-5">
+                <div class="text-center mb-4">
+                    <i class="fas fa-tooth fa-3x text-primary"></i>
+                </div>
+                <h2 class="h4 fw-bold text-center">Günlük Bakım Özeti</h2>
+                <p class="text-muted text-center">Hedeflerinizi ve uygulama içi modüllerinizi tek bakışta takip edin.</p>
+                <div class="row text-center mt-4">
+                    <div class="col-6 border-end">
+                        <div class="fs-3 fw-bold text-primary">92%</div>
+                        <div class="text-muted small">Fırçalama Uyumu</div>
+                    </div>
+                    <div class="col-6">
+                        <div class="fs-3 fw-bold text-primary">4.8</div>
+                        <div class="text-muted small">Analiz Güvenilirliği</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container pb-5">
+    <div class="row gy-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="card h-100 border-0 glass-card rounded-4 p-4">
+                <div class="mb-3 text-primary"><i class="fas fa-chart-line fa-2x"></i></div>
+                <h5 class="fw-semibold">Gerçek Zamanlı Analiz</h5>
+                <p class="text-muted">Diş durumunuzu görsel analiz raporlarıyla takip edin ve gelişimi ölçün.</p>
+                <a href="/analiz" class="stretched-link text-decoration-none">Analizi görüntüle →</a>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card h-100 border-0 glass-card rounded-4 p-4">
+                <div class="mb-3 text-primary"><i class="fas fa-map-marker-alt fa-2x"></i></div>
+                <h5 class="fw-semibold">Diş Haritası</h5>
+                <p class="text-muted">Dişlerinizi zonlara ayırarak bakım ve prosedürleri hedefleyin.</p>
+                <a href="/haritam" class="stretched-link text-decoration-none">Haritayı aç →</a>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card h-100 border-0 glass-card rounded-4 p-4">
+                <div class="mb-3 text-primary"><i class="fas fa-brush fa-2x"></i></div>
+                <h5 class="fw-semibold">Fırçalama Takibi</h5>
+                <p class="text-muted">Günlük fırçalama kayıtlarınızı kaydedin ve alışkanlıklarınıza rehberlik edin.</p>
+                <a href="/fircalama" class="stretched-link text-decoration-none">Takibi başlat →</a>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card h-100 border-0 glass-card rounded-4 p-4">
+                <div class="mb-3 text-primary"><i class="fas fa-user fa-2x"></i></div>
+                <h5 class="fw-semibold">Kişiselleştirilmiş Profil</h5>
+                <p class="text-muted">Profilinizde hedeflerinizi, notlarınızı ve sağlık geçmişinizi düzenleyin.</p>
+                <a href="/profil" class="stretched-link text-decoration-none">Profilime git →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container pb-5">
+    <div class="row g-4 align-items-center">
+        <div class="col-lg-6">
+            <div class="section-card p-5 h-100">
+                <span class="badge bg-success bg-opacity-10 text-success mb-3">Nasıl Çalışır</span>
+                <h3 class="fw-bold">Diş sağlığınızı planlayın ve uygulayın</h3>
+                <p class="text-muted mb-4">Tek bir platform üzerinden bakım ritminizi izleyin, analiz sonuçlarınızı değerlendirin ve günlük aktivitelere göre daha iyi sonuç alın.</p>
+                <ul class="list-unstyled">
+                    <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Kişisel durumunuz için anlık analiz ve öneriler</li>
+                    <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Fırçalama geçmişiyle düzenli alışkanlık oluşturma</li>
+                    <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Duyarlı ve tüm cihazlara uyumlu kullanım</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="row g-4">
+                <div class="col-sm-6">
+                    <div class="card glass-card rounded-4 border-0 p-4 h-100">
+                        <div class="mb-3 text-primary"><i class="fas fa-calendar-check fa-2x"></i></div>
+                        <h5 class="fw-semibold">Günlük Rutin</h5>
+                        <p class="text-muted">Fırçalama ve analiz görevlerini günlük planınıza ekleyin.</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card glass-card rounded-4 border-0 p-4 h-100">
+                        <div class="mb-3 text-primary"><i class="fas fa-shield-alt fa-2x"></i></div>
+                        <h5 class="fw-semibold">Güvenli Veri</h5>
+                        <p class="text-muted">Kişisel bilgileriniz korunur, sağlıklı bakım verileriniz size özel tutulur.</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card glass-card rounded-4 border-0 p-4 h-100">
+                        <div class="mb-3 text-primary"><i class="fas fa-lightbulb fa-2x"></i></div>
+                        <h5 class="fw-semibold">Akıllı Öneriler</h5>
+                        <p class="text-muted">Diş bakımınız için basit ve etkili öneriler sunar.</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card glass-card rounded-4 border-0 p-4 h-100">
+                        <div class="mb-3 text-primary"><i class="fas fa-chart-pie fa-2x"></i></div>
+                        <h5 class="fw-semibold">Performans Takibi</h5>
+                        <p class="text-muted">Gelişiminizi grafiklerle takip edin ve sonuçları ölçün.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const username = localStorage.getItem('kullanici_ad') || 'Diş Sağlığı Kahramanı';
+        const heroTitle = document.querySelector('.display-5');
+        if (heroTitle) {
+            heroTitle.innerHTML = `Hoşgeldiniz, <span class="text-primary">${username}</span>`;
+        }
+    });
+</script>
+{% endblock %}

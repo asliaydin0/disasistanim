@@ -27,12 +27,17 @@ def haritam_sayfasini_goster(request: Request):
     # Artık request=request ve name="sayfa.html" şeklinde açıkça belirtiyoruz
     return templates.TemplateResponse(request=request, name="hasta/haritam.html")
 
+@app.get("/analiz")
+def analiz_sayfasini_goster(request: Request):
+    """Diş analiz sayfasını ekrana basar."""
+    return templates.TemplateResponse(request=request, name="hasta/analiz.html")
+
 
 # --- API UÇLARI (JSON DÖNDÜREN UÇLAR) ---
 
 @app.get("/")
-def read_root():
-    return {"mesaj": "DişAsistanım API Başarıyla Çalışıyor!", "durum": "Aktif"}
+def read_root(request: Request):
+    return templates.TemplateResponse(request=request, name="anasayfa.html")
 
 @app.get("/db-test")
 def test_db():
@@ -91,6 +96,99 @@ class LoginVerisi(BaseModel):
     email: str
     password: str
     role: str
+
+class AnalizTalebi(BaseModel):
+    hasta_id: int
+    dis_numarasi: int
+    sikayet: str
+
+
+@app.post('/api/analiz')
+def analiz_istegi(istek: AnalizTalebi):
+    """Kullanıcının seçtiği diş ve şikayete göre dinamik analiz önerisi döner."""
+    sikayet = istek.sikayet
+    dis_no = istek.dis_numarasi
+
+    # Bölge temelli değerlendirme
+    if dis_no <= 8:
+        bolge = 'üst ön diş bölgesi'
+    elif dis_no <= 16:
+        bolge = 'üst arka diş bölgesi'
+    elif dis_no <= 24:
+        bolge = 'alt arka diş bölgesi'
+    else:
+        bolge = 'alt ön diş bölgesi'
+
+    temel_oneri = {
+        'Diş ağrısı': {
+            'title': 'Diş ağrısı analizi',
+            'analysis': f'{bolge} üzerinde hassasiyet ve potansiyel çürük riski var.',
+            'advice': 'Hemen bir muayene planlayın ve sıcak-soğuk hassasiyetini takip edin.',
+            'priority': 'Yüksek'
+        },
+        'Diş eti kanaması': {
+            'title': 'Diş eti kanaması değerlendirmesi',
+            'analysis': f'{bolge} çevresinde diş eti iltihabı belirtileri olabilir.',
+            'advice': 'Diş eti bakımını güçlendir, tuzlu suyla gargara yap ve 1 hafta sonra tekrar kontrol et.',
+            'priority': 'Orta'
+        },
+        'Hassasiyet': {
+            'title': 'Hassasiyet analizi',
+            'analysis': f'{bolge} için mine erozyonu veya açığa çıkmış dentin gösterebilir.',
+            'advice': 'Florürlü diş macunu kullan, aşındırıcı olmayan fırçalama teknikleri uygula.',
+            'priority': 'Orta'
+        },
+        'Çürük riski': {
+            'title': 'Çürük riski raporu',
+            'analysis': f'{bolge} için yüksek çürük olasılığı tespit edildi.',
+            'advice': 'Hızlı bir klinik kontrol ve gerekirse dolgu planı oluştur.',
+            'priority': 'Yüksek'
+        },
+        'Dolgu sonrası ağrı': {
+            'title': 'Dolgu sonrası ağrı incelemesi',
+            'analysis': f'{bolge} çevresinde dolgu uyumsuzluğu veya pulpa hassasiyeti olabilir.',
+            'advice': 'Dolgunun 48 saat içinde düzelmemesi halinde hekimle iletişime geç.',
+            'priority': 'Orta'
+        },
+        'Ağız kokusu': {
+            'title': 'Ağız kokusu değerlendirmesi',
+            'analysis': f'{bolge} bölgesinde plak birikimi ya da diş eti problemleri olabilir.',
+            'advice': 'Dil temizliği yap, ağız gargarası kullan ve protez/ dolgu yüzeylerini kontrol et.',
+            'priority': 'Orta'
+        },
+        'Sıcak/soğuk hassasiyeti': {
+            'title': 'Sıcak/soğuk hassasiyeti analizi',
+            'analysis': f'{bolge} için mine incelmesi veya çatlak olasılığı değerlendirilmelidir.',
+            'advice': 'Duyarlı diş için hassasiyet azaltıcı ürün kullan, gerekli ise hekim değerlendirmesi al.',
+            'priority': 'Orta'
+        }
+    }
+
+    if sikayet not in temel_oneri:
+        sikayet = 'Diş ağrısı'
+
+    secim = temel_oneri[sikayet]
+    risk_factor = 60 + (8 if secim['priority'] == 'Yüksek' else 0) + (5 if 'arka' in bolge else 0)
+    risk_score = min(100, risk_factor)
+
+    next_step = []
+    if secim['priority'] == 'Yüksek':
+        next_step.append('Hekimle hızlı randevu al.')
+    if sikayet == 'Diş eti kanaması':
+        next_step.append('Günde iki kez nazik diş eti masajı yap.')
+    if sikayet == 'Hassasiyet' or sikayet == 'Sıcak/soğuk hassasiyeti':
+        next_step.append('Florürlü hassasiyet giderici macun kullan.')
+
+    return {
+        'dis_numarasi': dis_no,
+        'sikayet': sikayet,
+        'analysis_title': secim['title'],
+        'analysis_summary': secim['analysis'],
+        'recommendation': secim['advice'],
+        'priority': secim['priority'],
+        'risk_score': risk_score,
+        'next_steps': next_step or ['Kayıtları takip et ve durum kötüleşirse tekrar analiz iste.']
+    }
 
 
 @app.post("/api/dis-guncelle")

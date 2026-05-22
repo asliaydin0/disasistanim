@@ -1,0 +1,200 @@
+﻿{% extends "layout/base.html" %}
+
+{% block title %}Diş Analizi | DişAsistanım{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    <div class="row align-items-center gy-4">
+        <div class="col-lg-7">
+            <span class="badge bg-primary bg-opacity-10 text-primary mb-3">Diş Analizi</span>
+            <h1 class="display-5 fw-bold">Şikayetini seç, dişini seç, yapay zekâ önerisini al.</h1>
+            <p class="lead text-muted">Seçtiğiniz dişe ve şikayetine göre kişiselleştirilmiş analiz, risk değerlendirmesi ve öncelikli bakım adımları sunar.</p>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <a href="/haritam" class="btn btn-primary btn-lg">Diş Haritam</a>
+                <a href="/profil" class="btn btn-outline-primary btn-lg">Profilim</a>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card glass-card rounded-4 border-0 p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div>
+                        <h5 class="mb-1">AI Destekli Bakım</h5>
+                        <p class="text-muted mb-0">Hızlı ve güvenilir öneriler</p>
+                    </div>
+                    <span class="badge bg-info bg-opacity-15 text-info py-2 px-3">Kullanıcı seçimine özel</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="fs-1 fw-bold text-primary">100</div>
+                    <div>
+                        <p class="mb-1 fw-semibold">Güven</p>
+                        <p class="text-muted small">Her analiz için özel değerlendirme</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container pb-5">
+    <div class="card glass-card rounded-4 border-0 p-4 mb-5">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-7">
+                <h4 class="fw-bold mb-3">Diş yapısı ve numaralandırma rehberi</h4>
+                <p class="text-muted">Aşağıdaki rehber, üst ve alt çene diş numaralarını anlamanıza yardımcı olur. Hangi bölgede sorun hissettiğinizi seçerek doğru numarayı daha kolay bulabilirsiniz.</p>
+                <div class="d-flex flex-wrap gap-2 mt-3">
+                    <span class="badge bg-primary bg-opacity-10 text-primary py-2 px-3">Üst çene: 1-16</span>
+                    <span class="badge bg-success bg-opacity-10 text-success py-2 px-3">Alt çene: 17-32</span>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="tooth-chart p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <p id="tooth-chart-instruction" class="text-muted mb-1">Diş şemasından bir diş seçin, ardından şikayetinizi seçin.</p>
+                            <div id="selected-tooth-display" class="small text-primary fw-semibold">Henüz diş seçilmedi</div>
+                        </div>
+                    </div>
+                    <div class="jaw-illustration">
+                        <svg viewBox="0 0 760 360" class="tooth-map" role="img" aria-label="Diş ve çene numaralandırma şeması">
+                            <defs>
+                                <linearGradient id="tooth-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#fefefe"/>
+                                    <stop offset="70%" stop-color="#eef2ff"/>
+                                </linearGradient>
+                                <filter id="tooth-shadow" x="-25%" y="-25%" width="150%" height="150%">
+                                    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#102a43" flood-opacity="0.12"/>
+                                </filter>
+                            </defs>
+                            <g class="jaw-shell upper-jaw">
+                                <path class="gum-line" d="M20,110 C120,30 640,30 740,110 C740,140 20,140 20,110 Z" />
+                                <path class="jaw-line" d="M30,100 C120,5 640,5 730,100" fill="none" />
+                                {% for i in range(1, 17) %}
+                                <g class="tooth-group" transform="translate({{ 24 + (i-1)*43 }}, 0)">
+                                    <path class="tooth-outline" d="M0,34 C6,8 18,0 24,0 C30,0 42,8 48,34 C46,55 41,71 36,84 C31,95 19,96 13,84 C8,72 2,55 0,34 Z" />
+                                    <text class="tooth-label" x="24" y="112">{{ i }}</text>
+                                </g>
+                                {% endfor %}
+                            </g>
+                            <g class="jaw-shell lower-jaw">
+                                <path class="gum-line" d="M20,260 C120,340 640,340 740,260 C740,230 20,230 20,260 Z" />
+                                <path class="jaw-line" d="M30,260 C120,360 640,360 730,260" fill="none" />
+                                {% for i in range(17, 33) %}
+                                <g class="tooth-group" transform="translate({{ 24 + (i-17)*43 }}, 180)">
+                                    <path class="tooth-outline" d="M0,34 C6,8 18,0 24,0 C30,0 42,8 48,34 C46,55 41,71 36,84 C31,95 19,96 13,84 C8,72 2,55 0,34 Z" />
+                                    <text class="tooth-label" x="24" y="112">{{ i }}</text>
+                                </g>
+                                {% endfor %}
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container pb-5">
+    <div class="row gy-4">
+        <div class="col-lg-5">
+            <div class="card glass-card rounded-4 border-0 p-4">
+                <h4 class="fw-bold mb-3">Diş Analizini Başlat</h4>
+                <form id="analysis-form">
+                    <div class="mb-3">
+                        <label for="selected-tooth" class="form-label small text-uppercase fw-semibold">Seçili Diş</label>
+                        <select id="selected-tooth" class="form-select" required>
+                            <option value="" disabled selected>Diş numarası seçin</option>
+                            {% for i in range(1, 33) %}
+                            <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">Yukarıdaki şemadan dişi seçin. Seçilen diş formda otomatik olarak görüntülenecektir.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="selected-complaint" class="form-label small text-uppercase fw-semibold">Başlıca Şikayet</label>
+                        <select id="selected-complaint" class="form-select" required>
+                            <option value="" disabled selected>Şikayet seçin</option>
+                            <option value="Diş ağrısı">Diş ağrısı</option>
+                            <option value="Diş eti kanaması">Diş eti kanaması</option>
+                            <option value="Hassasiyet">Hassasiyet</option>
+                            <option value="Çürük riski">Çürük riski</option>
+                            <option value="Dolgu sonrası ağrı">Dolgu sonrası ağrı</option>
+                            <option value="Ağız kokusu">Ağız kokusu</option>
+                            <option value="Sıcak/soğuk hassasiyeti">Sıcak/soğuk hassasiyeti</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label small text-uppercase fw-semibold">Hızlı Açıklama</label>
+                        <textarea class="form-control" id="complaint-detail" rows="3" placeholder="Kısa bir not ekleyebilirsiniz (opsiyonel)"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100">Analizi Oluştur</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div id="analysis-results" class="card glass-card rounded-4 border-0 p-4 d-none" >
+                <div id="analysis-result-header" class="d-flex align-items-start justify-content-between mb-4 flex-column flex-md-row gap-3">
+                    <div>
+                        <div class="text-uppercase text-info small fw-semibold mb-2">AI Analiz Sonucu</div>
+                        <h4 id="recommendation-title" class="fw-bold mb-2">Çok yakında analiz sonuçları burada görünecek.</h4>
+                        <p id="analysis-summary" class="text-muted mb-0">Diş seçimi ve şikayet bilgisine göre yapay zekâ önerisi alabilirsiniz.</p>
+                    </div>
+                    <div class="text-end">
+                        <span id="priority-badge" class="badge bg-warning text-dark py-2 px-3">Öncelik: Orta</span>
+                        <div class="mt-3">
+                            <span class="text-muted small d-block">Risk skoru</span>
+                            <span id="risk-score" class="badge bg-success py-2 px-3">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card border-0 section-card p-4 h-100">
+                            <h5 class="fw-semibold">Önerilen Aksiyon</h5>
+                            <p id="recommendation-text" class="text-muted mb-0">Formu doldurup analiz yaptığınızda buraya öneriler gelecek.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 section-card p-4 h-100">
+                            <h5 class="fw-semibold">Önerilen Adımlar</h5>
+                            <ul id="next-steps" class="list-unstyled mb-0 text-muted">
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Analiz için diş numarası ve şikayet seçin.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container pb-5">
+    <div class="row gy-4">
+        <div class="col-md-6">
+            <div class="card border-0 section-card p-4 h-100">
+                <h5 class="fw-bold mb-3">Neden bu analiz?</h5>
+                <p class="text-muted">Seçtiğiniz diş ve şikayet kombinasyonunu değerlendirerek, müdahale gerektiren öncelikleri sıralar ve gereksiz alarmı azaltır.</p>
+                <ul class="list-unstyled">
+                    <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Bölgesel risk değerlendirmesi</li>
+                    <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i> Şikayete özel bakım önerileri</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i> Kullanıcı odaklı aksiyon planı</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-0 section-card p-4 h-100">
+                <h5 class="fw-bold mb-3">Ne zaman tekrar?</h5>
+                <p class="text-muted">AI önerisi, eğer ağrı veya hassasiyet devam ederse 48 saat içinde tekrar analiz etmeyi önerir.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <span class="badge bg-success bg-opacity-15 text-success py-2 px-3">Hızlı geri bildirim</span>
+                    <span class="badge bg-info bg-opacity-15 text-info py-2 px-3">Kişiye özel</span>
+                    <span class="badge bg-warning bg-opacity-15 text-dark py-2 px-3">Klinik öncelik</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/analiz.js"></script>
+{% endblock %}
