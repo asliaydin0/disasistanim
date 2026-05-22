@@ -217,36 +217,99 @@
     box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
 }
 
-/* Ana Konteyner (Diş Haritası Beyaz Kartı) */
-.main-container { 
-    max-width: 950px; 
-    margin: 40px auto; 
-    background: rgba(255, 255, 255, 0.95); 
-    padding: 30px; 
-    border-radius: 24px; 
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); 
+/* Ana Konteyner */
+.main-container {
+    max-width: 950px;
+    margin: 40px auto;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
-h1 { color: #1e293b; font-weight: 800; margin: 20px 0; text-align: center; }
+h1 {
+    color: #1e293b;
+    font-weight: 800;
+    margin: 20px 0;
+    text-align: center;
+}
 
 /* Puan Kartı */
-.score-overview { display: flex; align-items: center; justify-content: space-between; background: #fff; border-radius: 20px; padding: 25px; margin-bottom: 35px; border: 1px solid #eef2f6; box-shadow: 0 8px 20px rgba(0,0,0,0.03); }
-.score-value { font-size: 3rem; font-weight: 900; color: #0f172a; line-height: 1; }
-.score-message { font-weight: 700; margin-top: 5px; }
-.progress-ring-circle { transition: stroke-dashoffset 1.5s ease-in-out; transform: rotate(-90deg); transform-origin: 50% 50%; stroke-linecap: round; }
-.score-icon-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; }
+.score-overview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 35px;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+}
+
+.score-value {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #0f172a;
+    line-height: 1;
+}
+
+.score-message {
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.progress-ring-circle {
+    transition: stroke-dashoffset 1.5s ease-in-out;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    stroke-linecap: round;
+}
+
+.score-icon-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+}
 
 /* Ağız ve Çene Alanı */
 .mouth-container {
-    background: #f8fafc; border-radius: 30px; padding: 40px 20px;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; overflow: hidden;
+    background: #f8fafc;
+    border-radius: 30px;
+    padding: 40px 20px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
 }
-.jaw-header { text-align: center; color: #64748b; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 20px; }
-.dental-arch {
-    display: flex; justify-content: center; align-items: flex-end; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; padding: 20px 0;
-}
-.dental-arch.lower { margin-top: 25px; margin-bottom: 0; }
 
+.jaw-header {
+    text-align: center;
+    color: #64748b;
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 20px;
+}
+
+.dental-arch {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+}
+
+.dental-arch.lower {
+    margin-top: 25px;
+    margin-bottom: 0;
+}
+
+/* DİŞ ŞEMASI */
 .tooth-chart {
     background: rgba(255, 255, 255, 0.92);
     border-radius: 32px;
@@ -261,6 +324,7 @@ h1 { color: #1e293b; font-weight: 800; margin: 20px 0; text-align: center; }
     width: 100%;
     height: auto;
     display: block;
+    transform: translateZ(0);
 }
 
 .gum-line {
@@ -275,16 +339,26 @@ h1 { color: #1e293b; font-weight: 800; margin: 20px 0; text-align: center; }
     fill: none;
 }
 
+/* DİŞLER */
+.tooth-group {
+    cursor: pointer;
+}
+
 .tooth-outline {
     fill: url(#tooth-gradient);
     stroke: rgba(15, 23, 42, 0.18);
     stroke-width: 1.8;
     filter: url(#tooth-shadow);
+    transition:
+        fill 0.2s ease,
+        stroke 0.2s ease,
+        stroke-width 0.2s ease;
 }
 
-.tooth-outline:hover {
+.tooth-group:hover .tooth-outline {
     fill: #f8fbff;
-    stroke: rgba(14, 165, 233, 0.5);
+    stroke: #0ea5e9;
+    stroke-width: 2.4;
 }
 
 .tooth-label {
@@ -292,30 +366,54 @@ h1 { color: #1e293b; font-weight: 800; margin: 20px 0; text-align: center; }
     font-weight: 800;
     fill: #0f172a;
     text-anchor: middle;
+    pointer-events: none;
+    transition: fill 0.2s ease;
+}
+
+.tooth-group:hover .tooth-label {
+    fill: #0ea5e9;
+}
+
+
+.tooth-group:hover .tooth-outline {
+    fill: #f8fbff;
+    stroke: rgba(14, 165, 233, 0.5);
+}
+
+.tooth-outline {
+    fill: url(#tooth-gradient);
+    stroke: rgba(15, 23, 42, 0.18);
+    stroke-width: 1.8;
+    filter: url(#tooth-shadow);
+    transition: fill 0.2s ease, stroke 0.2s ease;
+}
+
+.tooth-label {
+    font-size: 11px;
+    font-weight: 800;
+    fill: #0f172a;
+    text-anchor: middle;
+    pointer-events: none;
+}
+
+/* Seçili Diş */
+.tooth-group.selected-tooth .tooth-outline {
+    fill: #dbeafe;
+    stroke: #0ea5e9;
+    stroke-width: 2.5;
+}
+
+.tooth-group.selected-tooth .tooth-label {
+    fill: #0ea5e9;
 }
 
 .jaw-illustration {
     position: relative;
 }
 
-.jaw-shell.upper-jaw, .jaw-shell.lower-jaw {
+.jaw-shell.upper-jaw,
+.jaw-shell.lower-jaw {
     opacity: 1;
-}
-
-.tooth-group {
-    transition: transform 0.2s ease;
-    cursor: pointer;
-}
-.tooth-group:hover {
-    transform: translateY(-2px);
-}
-.tooth-group.selected-tooth .tooth-outline {
-    fill: #dbeafe;
-    stroke: #0ea5e9;
-    stroke-width: 2.5;
-}
-.tooth-group.selected-tooth .tooth-label {
-    fill: #0ea5e9;
 }
 
 .tooth-item {
@@ -323,14 +421,50 @@ h1 { color: #1e293b; font-weight: 800; margin: 20px 0; text-align: center; }
 }
 
 /* Durum Efektleri */
-.tooth-item.healthy img { filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.4)); }
-.tooth-item.decay img, .tooth-item.canal img { filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.8)); animation: pulse-red 2s infinite; }
-.tooth-item.filling img { filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6)); }
-.tooth-item.veneer img { filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.6)); }
-.tooth-item.missing img { opacity: 0.3; filter: grayscale(1) drop-shadow(0 0 2px rgba(0,0,0,0.2)); }
+.tooth-item.healthy img {
+    filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.4));
+}
 
-@keyframes pulse-red { 0%, 100% { filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.8)); } 50% { filter: drop-shadow(0 0 15px rgba(239, 68, 68, 1)); } }
+.tooth-item.decay img,
+.tooth-item.canal img {
+    filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.8));
+    animation: pulse-red 2s infinite;
+}
+
+.tooth-item.filling img {
+    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
+}
+
+.tooth-item.veneer img {
+    filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.6));
+}
+
+.tooth-item.missing img {
+    opacity: 0.3;
+    filter: grayscale(1) drop-shadow(0 0 2px rgba(0,0,0,0.2));
+}
+
+@keyframes pulse-red {
+    0%, 100% {
+        filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.8));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 15px rgba(239, 68, 68, 1));
+    }
+}
 
 @media (max-width: 768px) {
-    .tooth-item { width: 28px; } .dental-arch { gap: 2px; } .mouth-container { padding: 30px 10px; }
+
+    .tooth-item {
+        width: 28px;
+    }
+
+    .dental-arch {
+        gap: 2px;
+    }
+
+    .mouth-container {
+        padding: 30px 10px;
+    }
 }
